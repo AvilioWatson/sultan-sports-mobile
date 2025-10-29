@@ -9,7 +9,7 @@ class MyHomePage extends StatelessWidget {
 
   final List<ItemHomepage> items = [
     ItemHomepage("All Products", Icons.sports_soccer, Colors.blue),
-    ItemHomepage("My Producst", Icons.sports_basketball, Colors.green),
+    ItemHomepage("My Products", Icons.sports_basketball, Colors.green),
     ItemHomepage("Create Product", Icons.create, Colors.red),
   ];
 
