@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
-  final String nama = "Lionel Messi"; //nama
-  final String npm = "2406275678"; //npm
-  final String kelas = "B"; //kelas
+  final String nama = "Wildan Al Rizka Yusuf"; //nama
+  final String npm = "2406407083"; //npm
+  final String kelas = "D"; //kelas
 
   final List<ItemHomepage> items = [
-    ItemHomepage("See Football News", Icons.newspaper),
-    ItemHomepage("Add News", Icons.add),
-    ItemHomepage("Logout", Icons.logout),
+    ItemHomepage("All Products", Icons.sports_soccer, Colors.blue),
+    ItemHomepage("My Producst", Icons.sports_basketball, Colors.green),
+    ItemHomepage("Create Product", Icons.create, Colors.red),
   ];
 
   @override
@@ -21,7 +21,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         // Judul aplikasi "Football News" dengan teks putih dan tebal.
         title: const Text(
-          'Football News',
+          'Sultan Sports',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         // Warna latar belakang AppBar diambil dari skema warna tema aplikasi.
@@ -56,7 +56,7 @@ class MyHomePage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(top: 16.0),
                     child: Text(
-                      'Selamat datang di Football News',
+                      'Selamat datang di Sultan Sports',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
@@ -124,8 +124,9 @@ class InfoCard extends StatelessWidget {
 class ItemHomepage {
   final String name;
   final IconData icon;
+  final Color color;
 
-  ItemHomepage(this.name, this.icon);
+  ItemHomepage(this.name, this.icon, this.color);
 }
 
 class ItemCard extends StatelessWidget {
@@ -139,7 +140,7 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       // Menentukan warna latar belakang dari tema aplikasi.
-      color: Theme.of(context).colorScheme.secondary,
+      color: item.color,
       // Membuat sudut kartu melengkung.
       borderRadius: BorderRadius.circular(12),
 
