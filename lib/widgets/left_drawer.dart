@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sultan_sports/screens/menu.dart';
-
+import 'package:sultan_sports/screens/product_entry_list.dart';
 import 'package:sultan_sports/screens/productlist_form.dart';
 
 class LeftDrawer extends StatelessWidget {
@@ -11,8 +11,18 @@ class LeftDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
+          // HEADER DENGAN GRADIENT
           const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF8B4513), // coklat amber gelap
+                  Color(0xFFC56E1A), // amber-oranye lembut
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
             child: Column(
               children: [
                 Text(
@@ -20,11 +30,11 @@ class LeftDrawer extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                 ),
-                Padding(padding: EdgeInsets.all(10)),
+                SizedBox(height: 10),
                 Text(
                   "Seluruh Produk Olahraga terkini di sini!",
                   textAlign: TextAlign.center,
@@ -38,10 +48,16 @@ class LeftDrawer extends StatelessWidget {
             ),
           ),
 
+          // ========================
+          // MENU ITEMS
+          // ========================
+
           ListTile(
-            leading: const Icon(Icons.home_outlined),
-            title: const Text('Halaman Utama'),
-            // Bagian redirection ke MyHomePage
+            leading: const Icon(Icons.home_outlined, color: Colors.black87),
+            title: const Text(
+              'Halaman Utama',
+              style: TextStyle(color: Colors.black87),
+            ),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -49,10 +65,13 @@ class LeftDrawer extends StatelessWidget {
               );
             },
           ),
+
           ListTile(
-            leading: const Icon(Icons.add),
-            title: const Text('Tambah Produk'),
-            // Bagian redirection ke NewsFormPage
+            leading: const Icon(Icons.add, color: Colors.black87),
+            title: const Text(
+              'Tambah Produk',
+              style: TextStyle(color: Colors.black87),
+            ),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -62,13 +81,16 @@ class LeftDrawer extends StatelessWidget {
           ),
 
           ListTile(
-            leading: const Icon(Icons.newspaper),
-            title: const Text('Lihat Produk'),
-            // Bagian redirection ke ProductFormPage
+            leading:
+                const Icon(Icons.sports_volleyball_sharp, color: Colors.black87),
+            title: const Text(
+              'Lihat Produk',
+              style: TextStyle(color: Colors.black87),
+            ),
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => ProductFormPage()),
+                MaterialPageRoute(builder: (context) => ProductEntryListPage()),
               );
             },
           ),
