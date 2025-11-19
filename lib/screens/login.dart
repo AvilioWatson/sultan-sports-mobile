@@ -5,7 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:sultan_sports/screens/register.dart';
 
 void main() {
-  runApp(const LoginApp());
+  runApp(
+    Provider<CookieRequest>(
+      create: (_) => CookieRequest(),
+      child: const LoginApp(),
+    ),
+  );
 }
 
 class LoginApp extends StatelessWidget {
@@ -92,7 +97,9 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 10.0),
+                        horizontal: 12.0,
+                        vertical: 10.0,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -112,7 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 10.0),
+                        horizontal: 12.0,
+                        vertical: 10.0,
+                      ),
                     ),
                     obscureText: true,
                   ),
@@ -145,6 +154,8 @@ class _LoginPageState extends State<LoginPage> {
                           {'username': username, 'password': password},
                         );
 
+                        request.jsonData['user_id'] = response['user_id'];
+
                         if (request.loggedIn) {
                           String message = response['message'];
                           String uname = response['username'];
@@ -152,14 +163,14 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MyHomePage()),
+                                builder: (context) => MyHomePage(),
+                              ),
                             );
                             ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
                                 SnackBar(
-                                  content:
-                                      Text("$message Welcome, $uname."),
+                                  content: Text("$message Welcome, $uname."),
                                 ),
                               );
                           }
@@ -202,7 +213,8 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const RegisterPage()),
+                          builder: (context) => const RegisterPage(),
+                        ),
                       );
                     },
                     child: const Text(

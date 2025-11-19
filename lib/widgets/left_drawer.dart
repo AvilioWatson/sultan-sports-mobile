@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sultan_sports/screens/login.dart';
 import 'package:sultan_sports/screens/menu.dart';
 import 'package:sultan_sports/screens/product_entry_list.dart';
 import 'package:sultan_sports/screens/productlist_form.dart';
@@ -51,7 +52,6 @@ class LeftDrawer extends StatelessWidget {
           // ========================
           // MENU ITEMS
           // ========================
-
           ListTile(
             leading: const Icon(Icons.home_outlined, color: Colors.black87),
             title: const Text(
@@ -81,8 +81,10 @@ class LeftDrawer extends StatelessWidget {
           ),
 
           ListTile(
-            leading:
-                const Icon(Icons.sports_volleyball_sharp, color: Colors.black87),
+            leading: const Icon(
+              Icons.sports_volleyball_sharp,
+              color: Colors.black87,
+            ),
             title: const Text(
               'Lihat Produk',
               style: TextStyle(color: Colors.black87),
@@ -91,6 +93,20 @@ class LeftDrawer extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => ProductEntryListPage()),
+              );
+            },
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.black87),
+            title: const Text(
+              'Log Out ',
+              style: TextStyle(color: Colors.black87),
+            ),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
               );
             },
           ),

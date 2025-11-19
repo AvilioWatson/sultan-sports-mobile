@@ -18,16 +18,27 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
   Future<List<ProductEntry>> fetchProduct(CookieRequest request) async {
     final response = await request.get('http://localhost:8000/json/');
 
-    List<ProductEntry> listProduct = [];
+    final List<ProductEntry> listProduct = [];
+    final currentUserId = request.jsonData['user_id'];
+
     for (var d in response) {
-      if (d != null) {
-        final product = ProductEntry.fromJson(d);
-        if (!widget.showMyProducts ||
-            product.userId == request.jsonData['userId']) {
-          listProduct.add(product);
-        }
+      if (d == null) continue;
+
+      final product = ProductEntry.fromJson(d);
+
+      // Jika showMyProducts = false → tampilkan semua
+      if (!widget.showMyProducts) {
+        listProduct.add(product);
+        continue;
+      }
+
+      // Jika showMyProducts = true → hanya produk user
+      if (currentUserId != null && product.userId == currentUserId) {
+        listProduct.add(product);
+      } else {
       }
     }
+
     return listProduct;
   }
 
@@ -36,19 +47,18 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
     final request = context.watch<CookieRequest>();
 
     return Scaffold(
-      // 🔥 Gradient amber appbar
       appBar: AppBar(
         title: Text(
           widget.showMyProducts ? 'Produk Saya' : 'Semua Produk',
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Color(0xFFF57C00), // amber dark
-                Color(0xFFFFA726), // amber medium
-              ],
+              colors: [Color(0xFFF57C00), Color(0xFFFFA726)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -64,14 +74,18 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
+          }
+
+          if (snapshot.hasError) {
             return Center(
               child: Text(
                 'Error: ${snapshot.error}',
                 style: const TextStyle(fontSize: 16, color: Colors.red),
               ),
             );
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          }
+
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(
               child: Text(
                 'Tidak ada produk.',
@@ -92,7 +106,10 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
               final p = products[index];
 
               return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 elevation: 5,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -112,7 +129,6 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
                     padding: const EdgeInsets.all(14),
                     child: Row(
                       children: [
-                        // Thumbnail
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
@@ -120,19 +136,17 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
                             width: 85,
                             height: 85,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stack) =>
+                            errorBuilder: (c, e, s) =>
                                 const Icon(Icons.broken_image, size: 50),
                           ),
                         ),
 
                         const SizedBox(width: 14),
 
-                        // INFO PRODUK
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Name
                               Text(
                                 p.name,
                                 style: const TextStyle(
@@ -143,11 +157,10 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
 
                               const SizedBox(height: 6),
 
-                              // Price (amber)
                               Text(
                                 "Rp ${p.price}",
                                 style: const TextStyle(
-                                  color: Color(0xFFEF6C00), // orange dark
+                                  color: Color(0xFFEF6C00),
                                   fontWeight: FontWeight.w700,
                                   fontSize: 15,
                                 ),
@@ -155,15 +168,16 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
 
                               const SizedBox(height: 4),
 
-                              // Category
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
                                     colors: [
                                       Color(0xFFFFE0B2),
-                                      Color(0xFFFFCC80)
+                                      Color(0xFFFFCC80),
                                     ],
                                   ),
                                   borderRadius: BorderRadius.circular(10),
@@ -180,7 +194,6 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
 
                               const SizedBox(height: 4),
 
-                              // Stock
                               Text(
                                 "Stok: ${p.stock}",
                                 style: TextStyle(
@@ -191,7 +204,6 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
 
                               const SizedBox(height: 4),
 
-                              // Description
                               Text(
                                 p.description,
                                 maxLines: 2,
@@ -204,15 +216,15 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
 
                               const SizedBox(height: 4),
 
-                              // Featured
                               Text(
                                 "Featured: ${p.isFeatured ? 'Yes' : 'No'}",
                                 style: TextStyle(
                                   color: p.isFeatured
                                       ? const Color(0xFFF57C00)
                                       : Colors.grey,
-                                  fontWeight:
-                                      p.isFeatured ? FontWeight.bold : FontWeight.normal,
+                                  fontWeight: p.isFeatured
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
                                 ),
                               ),
                             ],
